@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>fraud</artifactId>
-
+    <packaging>jar</packaging>
     <build>
         <plugins>
             <plugin>

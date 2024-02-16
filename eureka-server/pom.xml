@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>eureka-server</artifactId>
-
+    <packaging>jar</packaging>
     <build>
         <plugins>
             <plugin>

@@ -1,9 +1,11 @@
 package com.jimaloojuma.clients.notifications;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record NotificationRequest(
-        Integer toCustomerId,
-        String toCustomerName,
-        String message
+        @JsonProperty("toCustomerId") Integer toCustomerId,
+        @JsonProperty("toCustomerName") String toCustomerName,
+        @JsonProperty("message") String message
 ) {
 }

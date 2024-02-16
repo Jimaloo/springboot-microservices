@@ -8,6 +8,7 @@
     <artifactId>SpringBoot-microservices</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <modules>
         <module>customer</module>
         <module>fraud</module>
@@ -17,6 +18,7 @@
         <module>api-gateway</module>
         <module>amqp</module>
     </modules>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -24,6 +26,7 @@
         <spring.boot.maven.plugin.version>2.5.7</spring.boot.maven.plugin.version>
         <spring.boot.dependencies.version>2.5.7</spring.boot.dependencies.version>
         <spring.cloud-version>2020.0.3</spring.cloud-version>
+        <image>jimaloojuma/${project.artifactId}:${project.version}</image>
     </properties>
 
     <dependencyManagement>
@@ -122,4 +125,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

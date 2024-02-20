@@ -4,19 +4,22 @@ spring:
   application:
     name: fraud
   datasource:
-    username: 'jimaloo'
+    password: password
     url: jdbc:postgresql://localhost:5432/fraud
-    password: 'password'
-    jpa:
+    username: jimaloo
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
       hibernate:
-        ddl-auto: create-drop
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-          format_sql: true
-      show-sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
   zipkin:
     base-url: http://localhost:9411
+  profiles:
+    active: default
+
 eureka:
   client:
     service-url:

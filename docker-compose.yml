@@ -3,7 +3,7 @@ services:
     container_name: postgres
     image: postgres
     environment:
-      POSTGRES_USER: jimaloo
+      POSTGRES_USER: jimaloojuma
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
@@ -13,23 +13,20 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-jimaloo43@gmail.com}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
       - pgadmin:/var/lib/pgadmin
-
     ports:
       - "5050:80"
     networks:
       - postgres
     restart: unless-stopped
-
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -43,13 +40,17 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - spring
   eureka-server:
     image: jimaloojuma/eureka-server:latest
     container_name: eureka-server
     ports:
       - "8761:8761"
     environment:
-      - SPRING_PROFILES_ACTIVE = docker
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
     depends_on:
       - zipkin
   api-gateway:
@@ -58,12 +59,54 @@ services:
     ports:
       - "8083:8083"
     environment:
-      - SPRING_PROFILES_ACTIVE = docker
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - spring
     depends_on:
       - zipkin
       - eureka-server
+  customer:
+    image: jimaloojuma/customer:latest
+    container_name: customer
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - postgres
+      - rabbitmq
+  fraud:
+    image: jimaloojuma/fraud:latest
+    container_name: fraud
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - postgres
+      - rabbitmq
+  notification:
+    image: jimaloojuma/notification:latest
+    container_name: notification
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - postgres
+      - rabbitmq
 networks:
   postgres:
     driver: bridge
